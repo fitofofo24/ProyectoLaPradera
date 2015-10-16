@@ -49,7 +49,7 @@ public final class Registro_Platos extends javax.swing.JInternalFrame {
     int plato = cmb_plato.getSelectedIndex()+1;
     Conexion c = new Conexion();
     Connection cn = c.conectar();
-    String sql = "INSERT INTO `tplato_bebida`( `nom_plato_beb`, `prec_uni`, `idcate`) VALUES ('"+nom+"',"+prec+","+plato+")";
+    String sql = "INSERT INTO `tplato_bebida`( nom_plato_beb,prec_uni,stock, idcate) VALUES ('"+nom+"',"+prec+",0,"+plato+")";
         try {
             Statement st = cn.createStatement();
             int res = st.executeUpdate(sql);
