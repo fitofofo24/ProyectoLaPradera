@@ -10,24 +10,18 @@ package MOZO;
  * @author Adolfo
  */
 public class Cantidades extends javax.swing.JFrame {   
+    public int cantidad;
     
     public Cantidades() {
         initComponents();
+        
         setLocationRelativeTo(null);
         for (int i = 1; i < 21; i++) {
             cmb_cantidad.addItem(i);
         }
-    }
-    
-    public int obtenerCantidad(){
-        int cant = cmb_cantidad.getSelectedIndex()+1;
-        Pedidos pe = new Pedidos();
-        pe.cantidad = cant;
-        return pe.cantidad;
-    }
+    }   
     
     
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -41,7 +35,6 @@ public class Cantidades extends javax.swing.JFrame {
         cmb_cantidad = new javax.swing.JComboBox();
         btn_aceptar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Cantidad");
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
@@ -89,8 +82,9 @@ public class Cantidades extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_aceptarActionPerformed
-        obtenerCantidad();
-        this.dispose();        
+        Pedidos p = new Pedidos();
+        p.cant = cmb_cantidad.getSelectedIndex()+1;
+        this.dispose();
     }//GEN-LAST:event_btn_aceptarActionPerformed
 
     /**
@@ -129,7 +123,7 @@ public class Cantidades extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn_aceptar;
+    public javax.swing.JButton btn_aceptar;
     private javax.swing.JComboBox cmb_cantidad;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables

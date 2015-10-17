@@ -20,7 +20,8 @@ public final class Pedidos extends javax.swing.JFrame {
     DefaultListModel modelotipico;
     DefaultListModel modelodia;
     DefaultListModel modelobebida;
-    int cantidad;
+    public int cant;
+    
     
     public Pedidos() {
         initComponents();
@@ -28,7 +29,6 @@ public final class Pedidos extends javax.swing.JFrame {
         lista_dia();
         lista_bebidas();
     }
-
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -216,6 +216,11 @@ public final class Pedidos extends javax.swing.JFrame {
         btn_quitar.setText("QUITAR");
 
         btn_añadir.setText("AÑADIR");
+        btn_añadir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_añadirActionPerformed(evt);
+            }
+        });
 
         lbl_cantidad.setText("jLabel3");
 
@@ -294,8 +299,11 @@ public final class Pedidos extends javax.swing.JFrame {
     private void lst_plato_diaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lst_plato_diaMouseClicked
         Cantidades c = new Cantidades();
         c.setVisible(true);
-        lbl_cantidad.setText(""+cantidad);
     }//GEN-LAST:event_lst_plato_diaMouseClicked
+
+    private void btn_añadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_añadirActionPerformed
+        lbl_cantidad.setText(""+cant);
+    }//GEN-LAST:event_btn_añadirActionPerformed
 
     public void lista_tipicos(){
         Conexion cn = new Conexion();
@@ -396,20 +404,17 @@ public final class Pedidos extends javax.swing.JFrame {
     private javax.swing.JButton btn_real_pedido;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JList jList3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
-    private javax.swing.JLabel lbl_cantidad;
+    public javax.swing.JLabel lbl_cantidad;
     private javax.swing.JLabel lbl_total;
     private javax.swing.JList lst_bebida;
     private javax.swing.JList lst_pedido_añadido;
