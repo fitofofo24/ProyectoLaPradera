@@ -33,10 +33,26 @@ public final class Pedidos extends javax.swing.JFrame {
         tbl_pedidos.setModel(modeltabla);
     }
     
-    public void cuerpo(){
+    public String listas(int lista){
+        String plato = null;
+        switch(lista){
+            case 1:
+                plato = lst_plato_dia.getSelectedValue().toString();
+                break;
+            case 2:
+                plato = lst_plato_tipico.getSelectedValue().toString();
+                break;
+            case 3:
+                plato = lst_bebida.getSelectedValue().toString();
+                break;
+        }       
+        return plato;
+    }
+    
+    public void pedidos(String nom){
         String  []datos = new String[3];
         int cantidad = Integer.parseInt(txt_cantidad.getText());
-        String plato = lst_plato_dia.getSelectedValue().toString();
+        String plato = nom;
         Conexion con = new Conexion();
         Connection cc = con.conectar();
         String sql = "SELECT prec_uni FROM tplato_bebida WHERE nom_plato_beb = '"+plato+"'";
@@ -181,6 +197,11 @@ public final class Pedidos extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
+        lst_plato_tipico.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lst_plato_tipicoMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(lst_plato_tipico);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -205,6 +226,11 @@ public final class Pedidos extends javax.swing.JFrame {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
+        });
+        lst_bebida.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lst_bebidaMouseClicked(evt);
+            }
         });
         jScrollPane4.setViewportView(lst_bebida);
 
@@ -549,7 +575,9 @@ public final class Pedidos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void lst_plato_diaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lst_plato_diaMouseClicked
-        activarCantidad();        
+        activarCantidad();
+        String nombrePlato = listas(1);
+        
     }//GEN-LAST:event_lst_plato_diaMouseClicked
 
     private void btn_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelarActionPerformed
@@ -602,9 +630,21 @@ public final class Pedidos extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_9ActionPerformed
 
     private void btn_aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_aceptarActionPerformed
-        cuerpo();
+        pedidos();
     }//GEN-LAST:event_btn_aceptarActionPerformed
 
+    private void lst_plato_tipicoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lst_plato_tipicoMouseClicked
+        activarCantidad();
+        listas(2);
+    }//GEN-LAST:event_lst_plato_tipicoMouseClicked
+
+    private void lst_bebidaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lst_bebidaMouseClicked
+        activarCantidad();
+        listas(3);
+    }//GEN-LAST:event_lst_bebidaMouseClicked
+
+    
+    
     public void lista_tipicos(){
         Conexion cn = new Conexion();
         Connection c = cn.conectar();
