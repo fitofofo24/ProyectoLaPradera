@@ -4,6 +4,9 @@ package MOZO;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -16,20 +19,27 @@ public final class Pedidos extends javax.swing.JFrame {
     DefaultTableModel modeltabla;
     public int cant;
     String n;
+    public double counter;
+    
     
     
     public Pedidos() {
         initComponents();
         setLocationRelativeTo(null);
+        btn_quitar.setEnabled(false);
         cabecera();        
         lista_tipicos();
         lista_dia();
         lista_bebidas();
-        desactivarCantidad();
+        desactivarCantidad();       
+        String fe = fecha();
+        lbl_fechas.setText(fe);
+        String ho = hora();
+        lbl_hora.setText(ho);
     }
     
     public void cabecera(){
-        String [] cabecera= {"Nombre de plato o bebida","Cantidad","Precio U."};
+        String [] cabecera= {"Nombre de plato o bebida","Cantidad","Precio U.","Subtotal"};
         modeltabla = new DefaultTableModel(null, cabecera);
         tbl_pedidos.setModel(modeltabla);
     }
@@ -51,27 +61,48 @@ public final class Pedidos extends javax.swing.JFrame {
     }
     
     public void pedidos(String nom){
-        String  []datos = new String[3];
+        String []datos = new String[4];
         int cantidad = Integer.parseInt(txt_cantidad.getText());
         String plato = nom;
         Conexion con = new Conexion();
         Connection cc = con.conectar();
-        String sql = "SELECT prec_uni FROM tplato_bebida WHERE nom_plato_beb = '"+plato+"'";
+        String sql = "select prec_uni from tplato_bebida WHERE nom_plato_beb = '"+plato+"'";
         try {
             Statement st = cc.createStatement();
             ResultSet rs = st.executeQuery(sql);
             
-            while (rs.next()) {                
+            while (rs.next()) {
+                Double sub = cantidad * rs.getDouble("prec_uni");
                 datos[0] = plato;
                 datos[1] = String.valueOf(cantidad);
                 datos[2] = rs.getString("prec_uni");
+                datos[3] = String.valueOf(sub);
                 modeltabla.addRow(datos);
+                counter = counter + sub;
             }
             tbl_pedidos.setModel(modeltabla);
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }
     
+    public String fecha(){
+        Calendar c = new GregorianCalendar();        
+        int dia = c.get(Calendar.DATE);
+        int mes = c.get(Calendar.MONTH);
+        int yy = c.get(Calendar.YEAR);
+        String fecha = dia+"/"+mes+"/"+yy;
+        return fecha;
+    }
+    
+    public String hora(){
+        Calendar c = new GregorianCalendar();        
+        int hora = c.get(Calendar.HOUR_OF_DAY);
+        int min = c.get(Calendar.MINUTE);
+        int seg = c.get(Calendar.SECOND);
+        String h = hora+":"+min+":"+seg;
+        return h;
+    }
     
     
     public void desactivarCantidad(){
@@ -159,7 +190,13 @@ public final class Pedidos extends javax.swing.JFrame {
         btn_aceptar = new javax.swing.JButton();
         btn_cancelar = new javax.swing.JButton();
         btn_borrar = new javax.swing.JButton();
-        lbl_prueba = new javax.swing.JLabel();
+        lbl_mesa = new javax.swing.JLabel();
+        lbl_numero = new javax.swing.JLabel();
+        btn_volver = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        lbl_fechas = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        lbl_hora = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("MESA #XX");
@@ -281,19 +318,15 @@ public final class Pedidos extends javax.swing.JFrame {
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)
-                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+            .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 401, Short.MAX_VALUE)
+            .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 32, Short.MAX_VALUE)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane6)
                 .addContainerGap())
         );
 
@@ -302,6 +335,7 @@ public final class Pedidos extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Dialog", 2, 24)); // NOI18N
         jLabel2.setText("S/.");
 
+        lbl_total.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         lbl_total.setText("....");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
@@ -311,17 +345,20 @@ public final class Pedidos extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbl_total, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(lbl_total, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbl_total, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(54, Short.MAX_VALUE))
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(29, 29, 29)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lbl_total, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         btn_real_pedido.setText("MANDAR PEDIDO");
@@ -522,16 +559,34 @@ public final class Pedidos extends javax.swing.JFrame {
                             .addGroup(panel_cantidadesLayout.createSequentialGroup()
                                 .addComponent(btn_borrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGap(1, 1, 1)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btn_aceptar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btn_cancelar)
-                        .addGap(0, 9, Short.MAX_VALUE))
+                        .addGap(0, 15, Short.MAX_VALUE))
                     .addComponent(panel_comentarios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
-        lbl_prueba.setText("jLabel1");
+        lbl_mesa.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        lbl_mesa.setText(".....");
+
+        lbl_numero.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        lbl_numero.setText("MESA N°:");
+
+        btn_volver.setText("VOLVER A MESAS");
+        btn_volver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_volverActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Fecha:");
+
+        lbl_fechas.setText("_____________");
+
+        jLabel3.setText("Hora:");
+
+        lbl_hora.setText("_____________");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -549,19 +604,30 @@ public final class Pedidos extends javax.swing.JFrame {
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btn_quitar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btn_p_entregado, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btn_real_pedido, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btn_volver, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btn_p_entregado, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btn_real_pedido, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
-                            .addComponent(btn_quitar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(43, 43, 43)
-                        .addComponent(lbl_prueba)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(lbl_numero)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lbl_mesa))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel1))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lbl_fechas)
+                                    .addComponent(lbl_hora))))
+                        .addGap(0, 2, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -569,16 +635,28 @@ public final class Pedidos extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
+                        .addGap(5, 5, 5)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lbl_mesa)
+                            .addComponent(lbl_numero))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(67, 67, 67)
                         .addComponent(btn_real_pedido)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btn_p_entregado)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btn_quitar)
-                        .addGap(51, 51, 51)
-                        .addComponent(lbl_prueba)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btn_volver)
+                        .addGap(40, 40, 40)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(lbl_fechas))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(lbl_hora))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -650,6 +728,7 @@ public final class Pedidos extends javax.swing.JFrame {
     private void btn_aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_aceptarActionPerformed
         if (!txt_cantidad.getText().trim().isEmpty()) {
             pedidos(n);
+            lbl_total.setText(""+counter);
             desactivarCantidad();
         } else {
             JOptionPane.showMessageDialog(null, "Ingrese cantidad!!");
@@ -671,6 +750,12 @@ public final class Pedidos extends javax.swing.JFrame {
     private void btn_borrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_borrarActionPerformed
         txt_cantidad.setText("");
     }//GEN-LAST:event_btn_borrarActionPerformed
+
+    private void btn_volverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_volverActionPerformed
+        Mesas me = new Mesas();
+        me.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btn_volverActionPerformed
 
     
     
@@ -733,6 +818,11 @@ public final class Pedidos extends javax.swing.JFrame {
         }
         }
   
+  public void total(){
+      
+  }
+  
+  
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -783,7 +873,10 @@ public final class Pedidos extends javax.swing.JFrame {
     private javax.swing.JButton btn_p_entregado;
     private javax.swing.JButton btn_quitar;
     private javax.swing.JButton btn_real_pedido;
+    private javax.swing.JButton btn_volver;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
@@ -796,7 +889,10 @@ public final class Pedidos extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JLabel lbl_cantidadPedido;
-    private javax.swing.JLabel lbl_prueba;
+    private javax.swing.JLabel lbl_fechas;
+    private javax.swing.JLabel lbl_hora;
+    public static javax.swing.JLabel lbl_mesa;
+    private javax.swing.JLabel lbl_numero;
     private javax.swing.JLabel lbl_total;
     private javax.swing.JList lst_bebida;
     private javax.swing.JList lst_pedido_añadido;
