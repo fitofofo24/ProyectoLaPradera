@@ -15,6 +15,7 @@ public final class Pedidos extends javax.swing.JFrame {
     DefaultListModel modelobebida;
     DefaultTableModel modeltabla;
     public int cant;
+    String n;
     
     
     public Pedidos() {
@@ -28,7 +29,7 @@ public final class Pedidos extends javax.swing.JFrame {
     }
     
     public void cabecera(){
-        String [] cabecera= {"Nombre","Cantidad","Precio U."};
+        String [] cabecera= {"Nombre de plato o bebida","Cantidad","Precio U."};
         modeltabla = new DefaultTableModel(null, cabecera);
         tbl_pedidos.setModel(modeltabla);
     }
@@ -80,6 +81,7 @@ public final class Pedidos extends javax.swing.JFrame {
         lbl_cantidadPedido.setEnabled(false);
         btn_aceptar.setEnabled(false);
         btn_cancelar.setEnabled(false);
+        btn_borrar.setEnabled(false);
         btn_0.setEnabled(false);
         btn_1.setEnabled(false);
         btn_2.setEnabled(false);
@@ -100,6 +102,7 @@ public final class Pedidos extends javax.swing.JFrame {
         lbl_cantidadPedido.setEnabled(true);
         btn_aceptar.setEnabled(true);
         btn_cancelar.setEnabled(true);
+        btn_borrar.setEnabled(true);
         btn_0.setEnabled(true);
         btn_1.setEnabled(true);
         btn_2.setEnabled(true);
@@ -155,6 +158,7 @@ public final class Pedidos extends javax.swing.JFrame {
         txa_comentarios = new javax.swing.JTextArea();
         btn_aceptar = new javax.swing.JButton();
         btn_cancelar = new javax.swing.JButton();
+        btn_borrar = new javax.swing.JButton();
         lbl_prueba = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -438,6 +442,14 @@ public final class Pedidos extends javax.swing.JFrame {
             }
         });
 
+        btn_borrar.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btn_borrar.setText("<");
+        btn_borrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_borrarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panel_cantidadesLayout = new javax.swing.GroupLayout(panel_cantidades);
         panel_cantidades.setLayout(panel_cantidadesLayout);
         panel_cantidadesLayout.setHorizontalGroup(
@@ -450,7 +462,7 @@ public final class Pedidos extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(txt_cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panel_cantidadesLayout.createSequentialGroup()
-                        .addGroup(panel_cantidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(panel_cantidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panel_cantidadesLayout.createSequentialGroup()
                                 .addComponent(btn_7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -471,10 +483,13 @@ public final class Pedidos extends javax.swing.JFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(btn_2)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btn_3))
-                            .addComponent(btn_aceptar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btn_cancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(panel_cantidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(btn_3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btn_borrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(panel_cantidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(btn_aceptar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btn_cancelar, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(panel_comentarios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -502,12 +517,16 @@ public final class Pedidos extends javax.swing.JFrame {
                             .addComponent(btn_2)
                             .addComponent(btn_3))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn_0)
+                        .addGroup(panel_cantidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btn_0)
+                            .addGroup(panel_cantidadesLayout.createSequentialGroup()
+                                .addComponent(btn_borrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(1, 1, 1)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btn_aceptar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btn_cancelar)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 9, Short.MAX_VALUE))
                     .addComponent(panel_comentarios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -576,8 +595,7 @@ public final class Pedidos extends javax.swing.JFrame {
 
     private void lst_plato_diaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lst_plato_diaMouseClicked
         activarCantidad();
-        String nombrePlato = listas(1);
-        
+        n = listas(1);        
     }//GEN-LAST:event_lst_plato_diaMouseClicked
 
     private void btn_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelarActionPerformed
@@ -630,18 +648,29 @@ public final class Pedidos extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_9ActionPerformed
 
     private void btn_aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_aceptarActionPerformed
-        pedidos();
+        if (!txt_cantidad.getText().trim().isEmpty()) {
+            pedidos(n);
+            desactivarCantidad();
+        } else {
+            JOptionPane.showMessageDialog(null, "Ingrese cantidad!!");
+        }
+        
+        
     }//GEN-LAST:event_btn_aceptarActionPerformed
 
     private void lst_plato_tipicoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lst_plato_tipicoMouseClicked
         activarCantidad();
-        listas(2);
+        n = listas(2);
     }//GEN-LAST:event_lst_plato_tipicoMouseClicked
 
     private void lst_bebidaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lst_bebidaMouseClicked
         activarCantidad();
-        listas(3);
+        n=listas(3);
     }//GEN-LAST:event_lst_bebidaMouseClicked
+
+    private void btn_borrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_borrarActionPerformed
+        txt_cantidad.setText("");
+    }//GEN-LAST:event_btn_borrarActionPerformed
 
     
     
@@ -749,6 +778,7 @@ public final class Pedidos extends javax.swing.JFrame {
     private javax.swing.JButton btn_8;
     private javax.swing.JButton btn_9;
     private javax.swing.JButton btn_aceptar;
+    private javax.swing.JButton btn_borrar;
     private javax.swing.JButton btn_cancelar;
     private javax.swing.JButton btn_p_entregado;
     private javax.swing.JButton btn_quitar;
