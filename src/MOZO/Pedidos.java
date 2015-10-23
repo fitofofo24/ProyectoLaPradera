@@ -86,6 +86,10 @@ public final class Pedidos extends javax.swing.JFrame {
         }
     }
     
+    public void enviarPedido(){
+        String datos[]= new String[4];        
+    }
+    
     public String fecha(){
         Calendar c = new GregorianCalendar();        
         int dia = c.get(Calendar.DATE);

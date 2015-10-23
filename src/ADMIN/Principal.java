@@ -5,6 +5,8 @@
  */
 package ADMIN;
 
+import CAJA.Login;
+
 /**
  *
  * @author Adolfo
@@ -53,8 +55,10 @@ public class Principal extends javax.swing.JFrame {
         lbl1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/w_blanconegro_50.jpg"))); // NOI18N
         jScrollPane2.setViewportView(lbl1);
 
+        jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/archivo.png"))); // NOI18N
         jMenu1.setText("Archivo");
 
+        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/nuevoUsuario.png"))); // NOI18N
         jMenuItem1.setText("Nuevo Usuario");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -63,6 +67,7 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem1);
 
+        jMenuItem10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/modificarUsuario.png"))); // NOI18N
         jMenuItem10.setText("Modificar Usuario");
         jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -71,6 +76,7 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem10);
 
+        jMenuItem4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/salir.png"))); // NOI18N
         jMenuItem4.setText("Salir");
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -81,37 +87,48 @@ public class Principal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
+        jMenu4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/informes.png"))); // NOI18N
         jMenu4.setText("Informes");
 
+        jMenuItem11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/ventas.png"))); // NOI18N
         jMenuItem11.setText("Ventas");
         jMenu4.add(jMenuItem11);
 
+        jMenuItem12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/compras.png"))); // NOI18N
         jMenuItem12.setText("Compras");
         jMenu4.add(jMenuItem12);
 
+        jMenuItem13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/ventaFecha.png"))); // NOI18N
         jMenuItem13.setText("Ventas por fecha");
         jMenu4.add(jMenuItem13);
 
         jMenuBar1.add(jMenu4);
 
+        jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/reportes.png"))); // NOI18N
         jMenu2.setText("Reportes");
 
+        jMenuItem5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/inventario.png"))); // NOI18N
         jMenuItem5.setText("Inventario - Stock");
         jMenu2.add(jMenuItem5);
 
+        jMenuItem6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/flujoCaja.png"))); // NOI18N
         jMenuItem6.setText("Flujo de Caja");
         jMenu2.add(jMenuItem6);
 
         jMenuBar1.add(jMenu2);
 
+        jMenu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/ayuda.png"))); // NOI18N
         jMenu3.setText("Ayuda");
 
+        jMenuItem7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/acercaDe.png"))); // NOI18N
         jMenuItem7.setText("Acerca de...");
         jMenu3.add(jMenuItem7);
 
+        jMenuItem8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/contacto.png"))); // NOI18N
         jMenuItem8.setText("Contacto");
         jMenu3.add(jMenuItem8);
 
+        jMenuItem9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/soporte.png"))); // NOI18N
         jMenuItem9.setText("Soporte");
         jMenu3.add(jMenuItem9);
 
@@ -127,7 +144,7 @@ public class Principal extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 460, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 426, Short.MAX_VALUE)
         );
 
         pack();
@@ -146,7 +163,9 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        System.exit(0);
+        Login lo = new Login();
+        lo.setVisible(true);
+        this.dispose();        
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     /**

@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
 import ADMIN.Principal;
+import MOZO.Mesas;
 
 /**
  *
@@ -144,6 +145,10 @@ public class Login extends javax.swing.JFrame {
                 }else if(perfil.equals("Cajero")){
                     Contenedor c = new Contenedor();
                     c.setVisible(true);
+                    this.dispose();
+                }else if(perfil.equals("Mozo")){
+                    Mesas m = new Mesas();
+                    m.setVisible(true);
                     this.dispose();
                 }
                 

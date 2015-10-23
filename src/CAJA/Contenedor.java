@@ -97,8 +97,10 @@ public class Contenedor extends javax.swing.JFrame implements Runnable{
         desktop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/fondos-de-pantalla-minimalistas-para-la-computadora.jpg"))); // NOI18N
         jScrollPane1.setViewportView(desktop);
 
+        jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/inicio.png"))); // NOI18N
         jMenu1.setText("Inicio");
 
+        jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/aperturaCaja.png"))); // NOI18N
         jMenuItem3.setText("Apertura de caja");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -107,6 +109,7 @@ public class Contenedor extends javax.swing.JFrame implements Runnable{
         });
         jMenu1.add(jMenuItem3);
 
+        jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/salir.png"))); // NOI18N
         jMenuItem2.setText("Salir");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -118,8 +121,10 @@ public class Contenedor extends javax.swing.JFrame implements Runnable{
         jMenuBar1.add(jMenu1);
         jMenuBar1.add(jMenu2);
 
+        jMenu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/contable.png"))); // NOI18N
         jMenu3.setText("Contable");
 
+        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/caja.png"))); // NOI18N
         jMenuItem1.setText("Caja");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -128,6 +133,7 @@ public class Contenedor extends javax.swing.JFrame implements Runnable{
         });
         jMenu3.add(jMenuItem1);
 
+        jMenuItem4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/gastos.png"))); // NOI18N
         jMenuItem4.setText("Gastos");
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -136,13 +142,16 @@ public class Contenedor extends javax.swing.JFrame implements Runnable{
         });
         jMenu3.add(jMenuItem4);
 
+        jMenuItem5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/cajaCobrar.png"))); // NOI18N
         jMenuItem5.setText("Cierre de caja");
         jMenu3.add(jMenuItem5);
 
         jMenuBar1.add(jMenu3);
 
+        jMenu4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/inventarios.png"))); // NOI18N
         jMenu4.setText("Inventario");
 
+        jMenuItem6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/entradaProductos.png"))); // NOI18N
         jMenuItem6.setText("Entrada de productos");
         jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -151,6 +160,7 @@ public class Contenedor extends javax.swing.JFrame implements Runnable{
         });
         jMenu4.add(jMenuItem6);
 
+        jMenuItem7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/nuevosProductos.png"))); // NOI18N
         jMenuItem7.setText("Nuevos productos");
         jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -159,6 +169,7 @@ public class Contenedor extends javax.swing.JFrame implements Runnable{
         });
         jMenu4.add(jMenuItem7);
 
+        jMenuItem9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/registraPlato.png"))); // NOI18N
         jMenuItem9.setText("Registra Plato");
         jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -169,8 +180,10 @@ public class Contenedor extends javax.swing.JFrame implements Runnable{
 
         jMenuBar1.add(jMenu4);
 
+        jMenu5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/reporte.png"))); // NOI18N
         jMenu5.setText("Reportes");
 
+        jMenuItem8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/historialCaja.png"))); // NOI18N
         jMenuItem8.setText("Historial de caja");
         jMenu5.add(jMenuItem8);
 
@@ -191,12 +204,12 @@ public class Contenedor extends javax.swing.JFrame implements Runnable{
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 751, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 717, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(353, 353, 353)
                     .addComponent(lbl_hora)
-                    .addContainerGap(354, Short.MAX_VALUE)))
+                    .addContainerGap(320, Short.MAX_VALUE)))
         );
 
         pack();

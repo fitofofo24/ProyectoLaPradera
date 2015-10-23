@@ -1,9 +1,11 @@
 
 package CAJA;
 
+import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -83,7 +85,8 @@ public final class Apertura extends javax.swing.JInternalFrame implements Runnab
             }else{
                 JOptionPane.showMessageDialog(null, "Error de conexion");
             }
-        } catch (Exception e) {
+        } catch (SQLException | HeadlessException e) {
+            JOptionPane.showMessageDialog(null, "Error: "+e.getMessage());
         }
     }
 
