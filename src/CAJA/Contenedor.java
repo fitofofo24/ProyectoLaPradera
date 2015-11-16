@@ -94,10 +94,10 @@ public class Contenedor extends javax.swing.JFrame implements Runnable{
         lbl_hora.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         lbl_hora.setText("........................");
 
-        desktop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/fondos-de-pantalla-minimalistas-para-la-computadora.jpg"))); // NOI18N
+        desktop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/D1E.jpg"))); // NOI18N
         jScrollPane1.setViewportView(desktop);
 
-        jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/inicio.png"))); // NOI18N
+        jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/archivo.png"))); // NOI18N
         jMenu1.setText("Inicio");
 
         jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/aperturaCaja.png"))); // NOI18N

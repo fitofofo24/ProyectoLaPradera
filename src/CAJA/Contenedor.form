@@ -7,7 +7,7 @@
         <Menu class="javax.swing.JMenu" name="jMenu1">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/IMG/inicio.png"/>
+              <Image iconType="3" name="/IMG/archivo.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Inicio"/>
           </Properties>
@@ -205,7 +205,7 @@
         <Component class="javax.swing.JLabel" name="desktop">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/IMG/fondos-de-pantalla-minimalistas-para-la-computadora.jpg"/>
+              <Image iconType="3" name="/IMG/D1E.jpg"/>
             </Property>
           </Properties>
         </Component>

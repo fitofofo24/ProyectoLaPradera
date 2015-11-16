@@ -11,6 +11,7 @@ package MOZO;
  */
 public class Mesas extends javax.swing.JFrame {
 
+    int est;
     
     public Mesas() {
         initComponents();
@@ -58,6 +59,8 @@ public class Mesas extends javax.swing.JFrame {
         btn_28 = new javax.swing.JButton();
         btn_29 = new javax.swing.JButton();
         btn_30 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        lbl_estado = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -331,6 +334,10 @@ public class Mesas extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setText("ESTADO:");
+
+        lbl_estado.setText("jLabel2");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -397,7 +404,11 @@ public class Mesas extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btn_29)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn_30)))
+                        .addComponent(btn_30))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lbl_estado)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -443,7 +454,11 @@ public class Mesas extends javax.swing.JFrame {
                     .addComponent(btn_28, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_29, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_30, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(lbl_estado))
+                .addContainerGap())
         );
 
         pack();
@@ -725,5 +740,7 @@ public class Mesas extends javax.swing.JFrame {
     public javax.swing.JButton btn_7;
     public javax.swing.JButton btn_8;
     public javax.swing.JButton btn_9;
+    private javax.swing.JLabel jLabel1;
+    public javax.swing.JLabel lbl_estado;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,9 +1,12 @@
 
 package MOZO;
 
+import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -17,11 +20,10 @@ public final class Pedidos extends javax.swing.JFrame {
     DefaultListModel modelodia;
     DefaultListModel modelobebida;
     DefaultTableModel modeltabla;
-    public int cant;
+    public int cant, estado;
     String n;
     public double counter;
-    
-    
+
     
     public Pedidos() {
         initComponents();
@@ -35,7 +37,7 @@ public final class Pedidos extends javax.swing.JFrame {
         String fe = fecha();
         lbl_fechas.setText(fe);
         String ho = hora();
-        lbl_hora.setText(ho);
+        lbl_hora.setText(ho);        
     }
     
     public void cabecera(){
@@ -86,9 +88,6 @@ public final class Pedidos extends javax.swing.JFrame {
         }
     }
     
-    public void enviarPedido(){
-        String datos[]= new String[4];        
-    }
     
     public String fecha(){
         Calendar c = new GregorianCalendar();        
@@ -107,6 +106,23 @@ public final class Pedidos extends javax.swing.JFrame {
         String h = hora+":"+min+":"+seg;
         return h;
     }
+    
+    /*public int obtenerIdPedido(){
+        Conexion con = new Conexion();
+        Connection cc = con.conectar();
+        String sql = "select idpedido from tpedido";
+        try {
+            Statement st = cc.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            int idpedido = Integer.parseInt(rs.getString("idpedido"));
+            return idpedido;
+        } catch (SQLException | NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+            return 0;
+        }
+    }*/
+    
+    
     
     
     public void desactivarCantidad(){
@@ -201,6 +217,10 @@ public final class Pedidos extends javax.swing.JFrame {
         lbl_fechas = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         lbl_hora = new javax.swing.JLabel();
+        lbl_prueba = new javax.swing.JLabel();
+        btn_probar = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        lbl_pedido = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("MESA #XX");
@@ -295,7 +315,7 @@ public final class Pedidos extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Pedidos Realizados"));
+        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Detalles de pedido"));
 
         lst_pedido_añadido.setBorder(javax.swing.BorderFactory.createTitledBorder("Pedidos Añadidos"));
         lst_pedido_añadido.setModel(new javax.swing.AbstractListModel() {
@@ -316,6 +336,11 @@ public final class Pedidos extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tbl_pedidos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_pedidosMouseClicked(evt);
+            }
+        });
         jScrollPane7.setViewportView(tbl_pedidos);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -361,15 +386,25 @@ public final class Pedidos extends javax.swing.JFrame {
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(lbl_total, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(lbl_total, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         btn_real_pedido.setText("MANDAR PEDIDO");
+        btn_real_pedido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_real_pedidoActionPerformed(evt);
+            }
+        });
 
         btn_p_entregado.setText("P. ENTREGADO");
 
         btn_quitar.setText("QUITAR");
+        btn_quitar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_quitarActionPerformed(evt);
+            }
+        });
 
         panel_cantidades.setBorder(javax.swing.BorderFactory.createTitledBorder("Cantidades"));
 
@@ -572,7 +607,7 @@ public final class Pedidos extends javax.swing.JFrame {
         );
 
         lbl_mesa.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
-        lbl_mesa.setText(".....");
+        lbl_mesa.setText("1");
 
         lbl_numero.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         lbl_numero.setText("MESA N°:");
@@ -591,6 +626,21 @@ public final class Pedidos extends javax.swing.JFrame {
         jLabel3.setText("Hora:");
 
         lbl_hora.setText("_____________");
+
+        lbl_prueba.setText("prueba");
+
+        btn_probar.setText("Probar");
+        btn_probar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_probarActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel4.setText("PEDIDO N°:");
+
+        lbl_pedido.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lbl_pedido.setText("0");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -615,13 +665,12 @@ public final class Pedidos extends javax.swing.JFrame {
                     .addComponent(btn_real_pedido, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btn_volver, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btn_probar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lbl_prueba))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(lbl_numero)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lbl_mesa))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel3)
@@ -629,8 +678,16 @@ public final class Pedidos extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lbl_fechas)
-                                    .addComponent(lbl_hora))))
-                        .addGap(0, 2, Short.MAX_VALUE)))
+                                    .addComponent(lbl_hora)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lbl_numero)
+                                    .addComponent(jLabel4))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lbl_pedido)
+                                    .addComponent(lbl_mesa))))
+                        .addGap(0, 30, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -639,13 +696,20 @@ public final class Pedidos extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(5, 5, 5)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lbl_mesa)
                             .addComponent(lbl_numero))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(67, 67, 67)
+                        .addGap(2, 2, 2)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(lbl_pedido))
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbl_prueba)
+                            .addComponent(btn_probar))
+                        .addGap(26, 26, 26)
                         .addComponent(btn_real_pedido)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btn_p_entregado)
@@ -676,7 +740,9 @@ public final class Pedidos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void lst_plato_diaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lst_plato_diaMouseClicked
-        activarCantidad();
+        activarCantidad();        
+            lst_plato_tipico.clearSelection();
+            lst_bebida.clearSelection();
         n = listas(1);        
     }//GEN-LAST:event_lst_plato_diaMouseClicked
 
@@ -731,9 +797,26 @@ public final class Pedidos extends javax.swing.JFrame {
 
     private void btn_aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_aceptarActionPerformed
         if (!txt_cantidad.getText().trim().isEmpty()) {
+            int pedido=0;
             pedidos(n);
             lbl_total.setText(""+counter);
             desactivarCantidad();
+            lst_plato_dia.clearSelection();
+            lst_plato_tipico.clearSelection();
+            lst_bebida.clearSelection();
+            Conexion con = new Conexion();
+            Connection cc = con.conectar();
+            String sql = "SELECT max(idpedido) FROM tpedido";
+            try {
+                Statement st = cc.createStatement();
+                ResultSet rs = st.executeQuery(sql);
+                if (rs.next()) {
+                    pedido = rs.getInt(1);
+                    lbl_pedido.setText(""+(pedido+1));
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e.getMessage());
+            }
         } else {
             JOptionPane.showMessageDialog(null, "Ingrese cantidad!!");
         }
@@ -743,11 +826,15 @@ public final class Pedidos extends javax.swing.JFrame {
 
     private void lst_plato_tipicoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lst_plato_tipicoMouseClicked
         activarCantidad();
+        lst_plato_dia.clearSelection();            
+            lst_bebida.clearSelection();
         n = listas(2);
     }//GEN-LAST:event_lst_plato_tipicoMouseClicked
 
     private void lst_bebidaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lst_bebidaMouseClicked
         activarCantidad();
+        lst_plato_dia.clearSelection();
+            lst_plato_tipico.clearSelection();            
         n=listas(3);
     }//GEN-LAST:event_lst_bebidaMouseClicked
 
@@ -761,6 +848,123 @@ public final class Pedidos extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btn_volverActionPerformed
 
+    private void tbl_pedidosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_pedidosMouseClicked
+        int fsel = tbl_pedidos.getSelectedRow();        
+        try {
+            if (fsel >= 0) {
+                btn_quitar.setEnabled(true);
+            } else {
+            }
+        } catch (Exception e) {
+        }        
+    }//GEN-LAST:event_tbl_pedidosMouseClicked
+
+    private void btn_quitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_quitarActionPerformed
+        int num = tbl_pedidos.getSelectedRow();
+        
+    }//GEN-LAST:event_btn_quitarActionPerformed
+
+    private void btn_real_pedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_real_pedidoActionPerformed
+        //0=si------1=no------2=cancelar
+        int opc = JOptionPane.showOptionDialog(btn_real_pedido, "El pedido sera enviado a cocina, ¿Desea continuar?", "showOptionDialog", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Si", "No", "Cancelar"}, "Si");
+        if (opc == 0) {
+            //int num = tbl_pedidos.getSelectedRow();
+            //String nombre = tbl_pedidos.getValueAt(num, 0).toString();
+            int mesa = Integer.parseInt(lbl_mesa.getText());
+            String fec = fecha();
+            String hor = hora();
+
+            Conexion con = new Conexion();
+            Connection cc = con.conectar();
+            String sql = "INSERT INTO tpedido(idmesa,idcliente,fecha,hora) VALUES (" + mesa + ",null,'" + fec + "','" + hor + "')";
+            try {
+                Statement st = cc.createStatement();
+                int res = st.executeUpdate(sql);
+                if (res > 0) {
+                    JOptionPane.showMessageDialog(rootPane, "El pedido se esta preparando");
+                    regDetallePedido();
+                    estado = 0;
+                    new Mesas().lbl_estado.setText(""+estado);
+                    this.dispose();
+                    new Mesas().setVisible(true);
+                } else {
+                }
+            } catch (SQLException | HeadlessException e) {
+                JOptionPane.showMessageDialog(null, "Error " + e.getMessage());
+            }
+        } else {
+        }
+        /*int num = tbl_pedidos.getSelectedRow();
+        String nombre = tbl_pedidos.getValueAt(num, 0).toString();
+        int mesa = Integer.parseInt(lbl_mesa.getText());
+        String fec = fecha();
+        String hor = hora();
+
+        Conexion con = new Conexion();
+        Connection cc = con.conectar();
+        String sql = "INSERT INTO tpedido(idmesa,idcliente,fecha,hora) VALUES (" + mesa + ",null,'" + fec + "','" + hor + "')";
+        try {
+            Statement st = cc.createStatement();
+            int res = st.executeUpdate(sql);
+            if (res > 0) {
+                modeltabla = (DefaultTableModel) tbl_pedidos.getModel();
+
+            } else {
+            }
+        } catch (Exception e) {
+        }*/
+    }//GEN-LAST:event_btn_real_pedidoActionPerformed
+
+    public void regDetallePedido(){
+        int numfilas = tbl_pedidos.getRowCount();        
+        int pedido = Integer.parseInt(lbl_pedido.getText());
+        
+        for (int i = 0; i < numfilas; i++) {
+            String nomplato = tbl_pedidos.getValueAt(i, 0).toString();
+            int idplato = obtenerIdPlato(nomplato);
+            int cantidad = Integer.parseInt(tbl_pedidos.getValueAt(i, 1).toString());
+            double subtotal = Double.parseDouble(tbl_pedidos.getValueAt(i, 3).toString());
+            Conexion cn = new Conexion();
+            Connection c = cn.conectar();            
+            String sql = "INSERT INTO tdetallepedido(idpedido, idplato_bebida, cantidad, sub_total, descuento) VALUES ("+pedido+","+idplato+","+cantidad+","+subtotal+",0);";
+            try {
+                Statement st = c.createStatement();
+                int rs = st.executeUpdate(sql);
+            } catch (SQLException | HeadlessException e) {
+                JOptionPane.showMessageDialog(this, e.getMessage());
+            }
+        }
+    }
+    
+    public int obtenerIdPlato(String nombre){
+        Conexion con = new Conexion();
+        Connection cc = con.conectar();
+        int idpedido=0;
+        //int numpedido = Integer.parseInt(lbl_pedido.getText());
+        String sql ="SELECT idplato_bebida FROM tplato_bebida WHERE nom_plato_beb='"+nombre+"'";
+        try {
+            Statement st = cc.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            if (rs.next()) {
+                idpedido = rs.getInt(1);
+                lbl_prueba.setText(""+idpedido);
+                return idpedido;
+            } else {
+                return -1;
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error " + e.getMessage());
+        }
+        return idpedido;
+    }
+    
+    private void btn_probarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_probarActionPerformed
+        
+        /*String nombre = tbl_pedidos.getValueAt(0,0).toString();
+        int idplato = obtenerIdPlato(nombre);
+        lbl_prueba.setText(""+idplato);*/
+        
+    }//GEN-LAST:event_btn_probarActionPerformed
     
     
     public void lista_tipicos(){
@@ -822,10 +1026,6 @@ public final class Pedidos extends javax.swing.JFrame {
         }
         }
   
-  public void total(){
-      
-  }
-  
   
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -875,12 +1075,14 @@ public final class Pedidos extends javax.swing.JFrame {
     private javax.swing.JButton btn_borrar;
     private javax.swing.JButton btn_cancelar;
     private javax.swing.JButton btn_p_entregado;
+    private javax.swing.JButton btn_probar;
     private javax.swing.JButton btn_quitar;
     private javax.swing.JButton btn_real_pedido;
     private javax.swing.JButton btn_volver;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
@@ -897,6 +1099,8 @@ public final class Pedidos extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_hora;
     public static javax.swing.JLabel lbl_mesa;
     private javax.swing.JLabel lbl_numero;
+    private javax.swing.JLabel lbl_pedido;
+    private javax.swing.JLabel lbl_prueba;
     private javax.swing.JLabel lbl_total;
     private javax.swing.JList lst_bebida;
     private javax.swing.JList lst_pedido_añadido;
