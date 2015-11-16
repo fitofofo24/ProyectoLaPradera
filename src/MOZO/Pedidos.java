@@ -1,12 +1,9 @@
 
 package MOZO;
 
-import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Time;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -38,7 +35,7 @@ public final class Pedidos extends javax.swing.JFrame {
         String fe = fecha();
         lbl_fechas.setText(fe);
         String ho = hora();
-        lbl_hora.setText(ho);        
+        lbl_hora.setText(ho);
     }
     
     public void cabecera(){
@@ -89,6 +86,9 @@ public final class Pedidos extends javax.swing.JFrame {
         }
     }
     
+    public void enviarPedido(){
+        String datos[]= new String[4];        
+    }
     
     public String fecha(){
         Calendar c = new GregorianCalendar();        
@@ -106,26 +106,6 @@ public final class Pedidos extends javax.swing.JFrame {
         int seg = c.get(Calendar.SECOND);
         String h = hora+":"+min+":"+seg;
         return h;
-    }
-    
-    public int obtenerIdPedido(){
-        Conexion con = new Conexion();
-        Connection cc = con.conectar();
-        String sql = "select idpedido from tpedido";
-        try {
-            Statement st = cc.createStatement();
-            ResultSet rs = st.executeQuery(sql);
-            int idpedido = Integer.parseInt(rs.getString("idpedido"));
-            return idpedido;
-        } catch (SQLException | NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());
-            return 0;
-        }
-    }
-    
-    public void regDetallePedido(){
-        int numfilas = tbl_pedidos.getRowCount();
-        String sql ="INSERT INTO tdetallepedido(idpedido,idplato_bebida,cantidad,subtotal,descuento) VALUES()";
     }
     
     
@@ -221,8 +201,6 @@ public final class Pedidos extends javax.swing.JFrame {
         lbl_fechas = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         lbl_hora = new javax.swing.JLabel();
-        lbl_prueba = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("MESA #XX");
@@ -338,11 +316,6 @@ public final class Pedidos extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        tbl_pedidos.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tbl_pedidosMouseClicked(evt);
-            }
-        });
         jScrollPane7.setViewportView(tbl_pedidos);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -393,20 +366,10 @@ public final class Pedidos extends javax.swing.JFrame {
         );
 
         btn_real_pedido.setText("MANDAR PEDIDO");
-        btn_real_pedido.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_real_pedidoActionPerformed(evt);
-            }
-        });
 
         btn_p_entregado.setText("P. ENTREGADO");
 
         btn_quitar.setText("QUITAR");
-        btn_quitar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_quitarActionPerformed(evt);
-            }
-        });
 
         panel_cantidades.setBorder(javax.swing.BorderFactory.createTitledBorder("Cantidades"));
 
@@ -609,7 +572,7 @@ public final class Pedidos extends javax.swing.JFrame {
         );
 
         lbl_mesa.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
-        lbl_mesa.setText("0");
+        lbl_mesa.setText(".....");
 
         lbl_numero.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         lbl_numero.setText("MESA N°:");
@@ -628,15 +591,6 @@ public final class Pedidos extends javax.swing.JFrame {
         jLabel3.setText("Hora:");
 
         lbl_hora.setText("_____________");
-
-        lbl_prueba.setText("prueba");
-
-        jButton1.setText("Probar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -676,11 +630,7 @@ public final class Pedidos extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lbl_fechas)
                                     .addComponent(lbl_hora))))
-                        .addGap(0, 24, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lbl_prueba)))
+                        .addGap(0, 2, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -695,11 +645,7 @@ public final class Pedidos extends javax.swing.JFrame {
                             .addComponent(lbl_numero))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbl_prueba)
-                            .addComponent(jButton1))
-                        .addGap(26, 26, 26)
+                        .addGap(67, 67, 67)
                         .addComponent(btn_real_pedido)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btn_p_entregado)
@@ -788,9 +734,6 @@ public final class Pedidos extends javax.swing.JFrame {
             pedidos(n);
             lbl_total.setText(""+counter);
             desactivarCantidad();
-            lst_plato_dia.clearSelection();
-            lst_plato_tipico.clearSelection();
-            lst_bebida.clearSelection();
         } else {
             JOptionPane.showMessageDialog(null, "Ingrese cantidad!!");
         }
@@ -818,49 +761,6 @@ public final class Pedidos extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btn_volverActionPerformed
 
-    private void tbl_pedidosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_pedidosMouseClicked
-        int fsel = tbl_pedidos.getSelectedRow();        
-        try {
-            if (fsel >= 0) {
-                btn_quitar.setEnabled(true);
-            } else {
-            }
-        } catch (Exception e) {
-        }        
-    }//GEN-LAST:event_tbl_pedidosMouseClicked
-
-    private void btn_quitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_quitarActionPerformed
-        int num = tbl_pedidos.getSelectedRow();
-        
-    }//GEN-LAST:event_btn_quitarActionPerformed
-
-    private void btn_real_pedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_real_pedidoActionPerformed
-        int num = tbl_pedidos.getSelectedRow();
-        String nombre = tbl_pedidos.getValueAt(num, 0).toString();
-        int mesa = Integer.parseInt(lbl_mesa.getText());
-        String fec = fecha();
-        String hor = hora();
-
-        Conexion con = new Conexion();
-        Connection cc = con.conectar();
-        String sql = "INSERT INTO tpedido(idmesa,idcliente,fecha,hora) VALUES (" + mesa + ",null,'" + fec + "','" + hor + "')";
-        try {
-            Statement st = cc.createStatement();
-            int res = st.executeUpdate(sql);
-            if (res > 0) {
-                modeltabla = (DefaultTableModel) tbl_pedidos.getModel();
-
-            } else {
-            }
-        } catch (Exception e) {
-        }
-    }//GEN-LAST:event_btn_real_pedidoActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        //regDetallePedido();
-        int ped = obtenerIdPedido();
-        lbl_prueba.setText(""+ped);
-    }//GEN-LAST:event_jButton1ActionPerformed
     
     
     public void lista_tipicos(){
@@ -922,6 +822,10 @@ public final class Pedidos extends javax.swing.JFrame {
         }
         }
   
+  public void total(){
+      
+  }
+  
   
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -974,7 +878,6 @@ public final class Pedidos extends javax.swing.JFrame {
     private javax.swing.JButton btn_quitar;
     private javax.swing.JButton btn_real_pedido;
     private javax.swing.JButton btn_volver;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -994,7 +897,6 @@ public final class Pedidos extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_hora;
     public static javax.swing.JLabel lbl_mesa;
     private javax.swing.JLabel lbl_numero;
-    private javax.swing.JLabel lbl_prueba;
     private javax.swing.JLabel lbl_total;
     private javax.swing.JList lst_bebida;
     private javax.swing.JList lst_pedido_añadido;
